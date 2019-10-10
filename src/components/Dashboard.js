@@ -3,6 +3,12 @@ import Loading from 'components/Loading';
 import Panel from 'components/Panel';
 import classnames from "classnames";
 import axios from "axios";
+import {
+  getTotalInterviews,
+  getLeastPopularTimeSlot,
+  getMostPopularDay,
+  getInterviewsPerDay
+ } from "helpers/selectors";
 const data = [
   {
     id: 1,
@@ -75,7 +81,6 @@ class Dashboard extends Component {
     if (this.state.loading) {
       return <Loading />;
     }
-    console.log(this.state)
     return <main className={dashboardClasses}>{panels}</main>
 
   }
