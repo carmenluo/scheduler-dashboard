@@ -26,11 +26,21 @@ const data = [
 ];
 class Dashboard extends Component {
   state = {
-    loading: false
+    loading: false,
+    focused: null
   };
+  //It must be an arrow function because of how they handle this context. Arrow functions are designed to alter this behaviour in a specific way. The binding is not dynamic; it is is based on where the function is declared.
+  // selectPanel = id => {
+    selectPanel(id) {
+      this.setState(previousState => ({
+        focused: previousState.focused !== null ? null : id
+      }));
+    }
   render() {
-    const dashboardClasses = classnames("dashboard");
-    let panels = data.map(item => <Panel key={item.id} id = {item.id} label= {item.label} value ={item.value}/>);
+    const dashboardClasses = classnames("dashboard", {"dashboard-focused": this.state.focused});
+    let panels = data
+    .filter(panel => this.state.focused === null || this.state.focused === panel.id)
+    .map(panel => <Panel key={panel.id} id = {panel.id} label= {panel.label} value ={panel.value} onSelect={event => this.selectPanel(panel.id)}/>);
     if (this.state.loading) {
       return <Loading />;
     }
